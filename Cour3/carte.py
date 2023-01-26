@@ -45,15 +45,36 @@ class robot:
         print("x= "+str(self.x) + "  y = "+str(self.y)+"; heading = "+ str(self.orientation) )
 
 
+    def length(self):
+        d1 = np.sqrt((self.x-20)**2+(self.y-20)**2)
+        d2 = np.sqrt((self.x-20)**2+(self.y-80)**2)
+        d3 = np.sqrt((self.x-80)**2+(self.y-20)**2)
+        d4 = np.sqrt((self.x-80)**2+(self.y-80)**2)
+        print("distance 1 = "+str(d1)+" distance 2 = "+str(d2)+" distance 3 = "+str(d3)+" distance 4 = "+str(d4))
+
+    def measurement_probabilite(self):
+
+        pass
+
+
 
 myrobot = robot()
 myrobot.set(10,10,0)
 myrobot.set_noise(0,0)
 myrobot.show()
-
+myrobot.length()
 
 myrobot = myrobot.move(np.pi/2, 10)
 myrobot.show()
+myrobot.length()
+N = 1000
+particule_set = []
+for i in range(1000):
+    particule_set.append(robot())
+    particule_set[-1].set_noise(0,0)
+
+
+
 
 
 
