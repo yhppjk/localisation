@@ -12,6 +12,24 @@ class robot:
         self.orientation = random.random() * 2 * np.pi
 
     def set(self, x, y, orientation):
-        self.x = x
-        self.y = y
-        self.orientation = orientation
+        self.x = float(x)
+        self.y = float(y)
+        self.orientation = float(orientation)
+        return self.x, self.y, self.orientation
+
+    def move(self, heading, distance):
+
+        self.orientation = (self.orientation + heading) % (2*np.pi)
+
+        x = self.x + (np.cos(self.orientation) * distance)
+        y = self.y + (np.sin(self.orientation) * distance)
+
+
+
+
+
+
+
+
+
+
