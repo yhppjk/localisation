@@ -56,8 +56,6 @@ class robot:
 
         pass
 
-
-
 myrobot = robot()
 myrobot.set(10,10,0)
 myrobot.set_noise(0,0)
