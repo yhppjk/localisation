@@ -11,19 +11,49 @@ class robot:
         self.y = random.random()*world_size
         self.orientation = random.random() * 2 * np.pi
 
+        self.forward_noise = 0.
+        self.turn_noise = 0.
+
     def set(self, x, y, orientation):
         self.x = float(x)
         self.y = float(y)
         self.orientation = float(orientation)
         return self.x, self.y, self.orientation
 
+    def set_noise(self, forward_noise, turn_noise):
+        self.forward_noise = forward_noise
+        self.turn_noise = turn_noise
+
     def move(self, heading, distance):
 
-        self.orientation = (self.orientation + heading) % (2*np.pi)
+        distance += np.random.normal(0, self.forward_noise)
+        orientation = (self.orientation + heading + np.random.normal(0, self.turn_noise)) % (2*np.pi)
 
         x = self.x + (np.cos(self.orientation) * distance)
         y = self.y + (np.sin(self.orientation) * distance)
 
+        if x > world_size or x < 0:
+            x = x%world_size
+        if y > world_size or y < 0:
+            y = y%world_size
+
+        res = robot()
+        res.set(x, y, orientation)
+        res.set_noise(self.forward_noise, self.turn_noise)
+        return res
+    def show(self):
+        print("x= "+str(self.x) + "  y = "+str(self.y)+"; heading = "+ str(self.orientation) )
+
+
+
+myrobot = robot()
+myrobot.set(10,10,0)
+myrobot.set_noise(0,0)
+myrobot.show()
+
+
+myrobot = myrobot.move(np.pi/2, 10)
+myrobot.show()
 
 
 
