@@ -1,5 +1,7 @@
 import numpy as np
 import random
+from math import exp
+from math import sqrt
 import matplotlib as plt
 
 world_size = 100.
@@ -43,6 +45,14 @@ class robot:
         return res
     def show(self):
         print("x= "+str(self.x) + "  y = "+str(self.y)+"; heading = "+ str(self.orientation) )
+
+    def gaussienne(self, mu, sigma, x):
+        return exp(-(mu - x)**2 / (sigma**2)/2) / sqrt(2.0 * np.pi*(sigma**2))
+    def mesurement_probability(self, mesurement):
+        distances = self.sense()
+        ## a faire
+        for i in range(len(landmarks)):
+            prob *= self.gaussienne(mu = distances[i], sigma=self.mesurement_noise, x=mesurement[i])
 
 
     def length(self):
