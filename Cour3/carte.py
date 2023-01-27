@@ -15,6 +15,7 @@ class robot:
 
         self.forward_noise = 0.
         self.turn_noise = 0.
+        self.measurement_noise = 0.
 
     def set(self, x, y, orientation):
         self.x = float(x)
@@ -22,9 +23,10 @@ class robot:
         self.orientation = float(orientation)
         return self.x, self.y, self.orientation
 
-    def set_noise(self, forward_noise, turn_noise):
+    def set_noise(self, forward_noise, turn_noise, measurement_noise):
         self.forward_noise = forward_noise
         self.turn_noise = turn_noise
+        self.measurement_noise  = measurement_noise
 
     def move(self, heading, distance):
 
@@ -41,21 +43,35 @@ class robot:
 
         res = robot()
         res.set(x, y, orientation)
-        res.set_noise(self.forward_noise, self.turn_noise)
+        res.set_noise(self.forward_noise, self.turn_noise, self.measurement_noise)
         return res
     def show(self):
         print("x= "+str(self.x) + "  y = "+str(self.y)+"; heading = "+ str(self.orientation) )
 
     def gaussienne(self, mu, sigma, x):
-        return exp(-(mu - x)**2 / (sigma**2)/2) / sqrt(2.0 * np.pi*(sigma**2))
-    def mesurement_probability(self, mesurement):
-        #prob = 1
+        return exp(-(mu - x)**2 / (sigma**2)/2) / sqrt(2.0 * np.pi*sigma)
+    def measurement_probability(self, measurement):
+        prob = 1
         distances = self.sense()
         ## a faire
         for i in range(len(landmarks)):
-            prob *= self.gaussienne(mu = distances[i], sigma=self.mesurement_noise, x=mesurement[i])
+            prob *= self.gaussienne(mu=distances[i], sigma=self.measurement_noise, x=measurement[i])
         return prob
+    def measurement(self):
+        d1 = np.sqrt((self.x-20)**2+(self.y-20)**2)
+        d2 = np.sqrt((self.x-20)**2+(self.y-80)**2)
+        d3 = np.sqrt((self.x-80)**2+(self.y-20)**2)
+        d4 = np.sqrt((self.x-80)**2+(self.y-80)**2)
+        print("distance 1 = "+str(d1)+" distance 2 = "+str(d2)+" distance 3 = "+str(d3)+" distance 4 = "+str(d4))
+
     def sense(self):
+        d1 = np.sqrt((self.x-20)**2+(self.y-20)**2)
+        d2 = np.sqrt((self.x-20)**2+(self.y-80)**2)
+        d3 = np.sqrt((self.x-80)**2+(self.y-20)**2)
+        d4 = np.sqrt((self.x-80)**2+(self.y-80)**2)
+        return [d1,d2,d3,d4]
+
+    def resample(self):
         pass
 #np.random.choice(particule.set, size=N, p=w, replace = True)
 #   w a normaliser
@@ -70,28 +86,22 @@ class robot:
     #robot.sense()
 
 
-    def length(self):
-        d1 = np.sqrt((self.x-20)**2+(self.y-20)**2)
-        d2 = np.sqrt((self.x-20)**2+(self.y-80)**2)
-        d3 = np.sqrt((self.x-80)**2+(self.y-20)**2)
-        d4 = np.sqrt((self.x-80)**2+(self.y-80)**2)
-        print("distance 1 = "+str(d1)+" distance 2 = "+str(d2)+" distance 3 = "+str(d3)+" distance 4 = "+str(d4))
 
 
 myrobot = robot()
 myrobot.set(10,10,0)
-myrobot.set_noise(0,0)
+myrobot.set_noise(0,0,0)
 myrobot.show()
-myrobot.length()
+myrobot.measurement()
 
 myrobot = myrobot.move(np.pi/2, 10)
 myrobot.show()
-myrobot.length()
+myrobot.measurement()
 N = 1000
 particule_set = []
 for i in range(1000):
     particule_set.append(robot())
-    particule_set[-1].set_noise(0,0)
+    particule_set[-1].set_noise(0,0,0)
 
 
 
