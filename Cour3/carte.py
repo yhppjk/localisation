@@ -53,6 +53,20 @@ class robot:
         ## a faire
         for i in range(len(landmarks)):
             prob *= self.gaussienne(mu = distances[i], sigma=self.mesurement_noise, x=mesurement[i])
+        return prob
+    def sense(self):
+        pass
+#np.random.choice(particule.set, size=N, p=w, replace = True)
+#   w a normaliser
+
+
+    #robot.measurement = robot.sense()
+    #w = measurement_prob
+    #....wn
+    #normalizer les poids : wi / (w1+w2+...+wn)
+    #resample particule
+    #robot.move()
+    #robot.sense()
 
 
     def length(self):
@@ -62,9 +76,6 @@ class robot:
         d4 = np.sqrt((self.x-80)**2+(self.y-80)**2)
         print("distance 1 = "+str(d1)+" distance 2 = "+str(d2)+" distance 3 = "+str(d3)+" distance 4 = "+str(d4))
 
-    def measurement_probabilite(self):
-
-        pass
 
 myrobot = robot()
 myrobot.set(10,10,0)
