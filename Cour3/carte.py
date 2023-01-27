@@ -49,6 +49,7 @@ class robot:
     def gaussienne(self, mu, sigma, x):
         return exp(-(mu - x)**2 / (sigma**2)/2) / sqrt(2.0 * np.pi*(sigma**2))
     def mesurement_probability(self, mesurement):
+        #prob = 1
         distances = self.sense()
         ## a faire
         for i in range(len(landmarks)):
